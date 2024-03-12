@@ -161,6 +161,7 @@ describe('asar package', function () {
 
       fs = require('node:fs')
       path = require('node:path')
+      fixtures = ${JSON.stringify(fixtures)}
       asarDir = ${JSON.stringify(asarDir)}
 
       // This is used instead of util.promisify for some tests to dodge the
@@ -897,6 +898,37 @@ describe('asar package', function () {
         expect(dirs).to.deep.equal(['dir1', 'dir2', 'dir3', 'file1', 'file2', 'file3', 'link1', 'link2', 'ping.js']);
       });
 
+      itremote('supports recursive readdirSync', async () => {
+        const dir = path.join(fixtures, 'recursive-asar');
+        const files = await fs.readdirSync(dir, { recursive: true });
+        expect(files).to.have.members([
+          'a.asar',
+          'nested',
+          'test.txt',
+          'a.asar/dir1',
+          'a.asar/dir2',
+          'a.asar/dir3',
+          'a.asar/file1',
+          'a.asar/file2',
+          'a.asar/file3',
+          'a.asar/link1',
+          'a.asar/link2',
+          'a.asar/ping.js',
+          'nested/hello.txt',
+          'a.asar/dir1/file1',
+          'a.asar/dir1/file2',
+          'a.asar/dir1/file3',
+          'a.asar/dir1/link1',
+          'a.asar/dir1/link2',
+          'a.asar/dir2/file1',
+          'a.asar/dir2/file2',
+          'a.asar/dir2/file3',
+          'a.asar/dir3/file1',
+          'a.asar/dir3/file2',
+          'a.asar/dir3/file3'
+        ]);
+      });
+
       itremote('reads dirs from a normal dir', function () {
         const p = path.join(asarDir, 'a.asar', 'dir1');
         const dirs = fs.readdirSync(p);
@@ -942,6 +974,37 @@ describe('asar package', function () {
         const p = path.join(asarDir, 'a.asar');
         const dirs = await promisify(fs.readdir)(p);
         expect(dirs).to.deep.equal(['dir1', 'dir2', 'dir3', 'file1', 'file2', 'file3', 'link1', 'link2', 'ping.js']);
+      });
+
+      itremote('supports recursive readdirSync', async () => {
+        const dir = path.join(fixtures, 'recursive-asar');
+        const files = await promisify(fs.readdir)(dir, { recursive: true });
+        expect(files).to.have.members([
+          'a.asar',
+          'nested',
+          'test.txt',
+          'a.asar/dir1',
+          'a.asar/dir2',
+          'a.asar/dir3',
+          'a.asar/file1',
+          'a.asar/file2',
+          'a.asar/file3',
+          'a.asar/link1',
+          'a.asar/link2',
+          'a.asar/ping.js',
+          'nested/hello.txt',
+          'a.asar/dir1/file1',
+          'a.asar/dir1/file2',
+          'a.asar/dir1/file3',
+          'a.asar/dir1/link1',
+          'a.asar/dir1/link2',
+          'a.asar/dir2/file1',
+          'a.asar/dir2/file2',
+          'a.asar/dir2/file3',
+          'a.asar/dir3/file1',
+          'a.asar/dir3/file2',
+          'a.asar/dir3/file3'
+        ]);
       });
 
       itremote('supports withFileTypes', async () => {
@@ -1006,6 +1069,37 @@ describe('asar package', function () {
         const p = path.join(asarDir, 'a.asar');
         const dirs = await fs.promises.readdir(p);
         expect(dirs).to.deep.equal(['dir1', 'dir2', 'dir3', 'file1', 'file2', 'file3', 'link1', 'link2', 'ping.js']);
+      });
+
+      itremote('supports recursive readdir', async () => {
+        const dir = path.join(fixtures, 'recursive-asar');
+        const files = await fs.promises.readdir(dir, { recursive: true });
+        expect(files).to.have.members([
+          'a.asar',
+          'nested',
+          'test.txt',
+          'a.asar/dir1',
+          'a.asar/dir2',
+          'a.asar/dir3',
+          'a.asar/file1',
+          'a.asar/file2',
+          'a.asar/file3',
+          'a.asar/link1',
+          'a.asar/link2',
+          'a.asar/ping.js',
+          'nested/hello.txt',
+          'a.asar/dir1/file1',
+          'a.asar/dir1/file2',
+          'a.asar/dir1/file3',
+          'a.asar/dir1/link1',
+          'a.asar/dir1/link2',
+          'a.asar/dir2/file1',
+          'a.asar/dir2/file2',
+          'a.asar/dir2/file3',
+          'a.asar/dir3/file1',
+          'a.asar/dir3/file2',
+          'a.asar/dir3/file3'
+        ]);
       });
 
       itremote('supports withFileTypes', async function () {
